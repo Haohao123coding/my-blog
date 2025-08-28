@@ -1,0 +1,40 @@
+site_name: My Docs
+site_url: https://haohao123coding.github.io/my-blog/
+dev_addr: 127.0.0.1:57777
+theme:
+    name: material
+    language: 'zh'
+    features:
+        - math
+        - content.code.copy
+
+nav:
+    - 博客主页:
+        - 主页: index.md                                    # [/]
+    - 博客文章:
+        - 关于文章: blogarticles/index.md                   # [/]
+        - 题解:
+            - 洛谷 P12246: blogarticles/tj/luogu-p12246.md  # [/]
+            - 洛谷 P1051: blogarticles/tj/luogu-p1051.md    # [.]
+            - 洛谷 P1096: blogarticles/tj/luogu-P1096.md    # [.]
+    - 关于页面:
+        - 关于页面: about/index.md                          # [/]
+        - 如何评论: about/how-to-make-comments.md           # [/]
+        - 如何搭建这样的页面: about/how-to-build-page.md     # [/]
+
+extra_javascript:
+    - https://unpkg.com/katex@0.16.9/dist/katex.min.js
+    - https://unpkg.com/katex@0.16.9/dist/contrib/auto-render.min.js
+    - assets/js/math.js
+
+extra_css:
+    - https://unpkg.com/katex@0.16.9/dist/katex.min.css
+
+
+markdown_extensions:
+    - pymdownx.arithmatex:
+        generic: true
+        inline_syntax:
+            - '$'
+        block_syntax:
+            - '$$'
