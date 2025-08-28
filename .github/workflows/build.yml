@@ -1,37 +1,29 @@
-name: Build GitHub Pages
-
+name: ci 
 on:
-    workflow_dispatch:
-
+  push:
+    branches:
+      - master 
+      - main
+permissions:
+  contents: write
 jobs:
-    build-site:
-        name: Build Site
-        runs-on: ubuntu-latest
-        steps:
-            # 1 拉取仓库代码
-            -   name: Checkout repository
-                uses: actions/checkout@v4
-
-            # 2 缓存 pip 包，加快依赖安装
-            -   name: Cache pip
-                uses: actions/cache@v3
-                with:
-                path: ~/.cache/pip
-                key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-                restore-keys: |
-                    ${{ runner.os }}-pip-
-
-            # 3 配置 Python 环境
-            -   name: Setup Python
-                uses: actions/setup-python@v5
-                with:
-                    python-version: '3.x'
-
-            # 4 安装 MkDocs 及主题
-            -   name: Install dependencies
-                run: |
-                    pip install -r requirements.txt
-
-            # 5 构建并部署到 gh-pages
-            -   name: Build and Deploy
-                run: mkdocs gh-deploy --force
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure Git Credentials
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+      - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV 
+      - uses: actions/cache@v4
+        with:
+          key: mkdocs-material-${{ env.cache_id }}
+          path: ~/.cache 
+          restore-keys: |
+            mkdocs-material-
+      - run: pip install mkdocs-material 
+      - run: mkdocs gh-deploy --force
